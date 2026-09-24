@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: elastic-otel-collector-config
+  namespace: platform
+data:
+  config.yaml: |
+    extensions:
+      health_check:
+        endpoint: 0.0.0.0:13133
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+    processors:
+      batch: {}
+    exporters:
+      elasticsearch:
+        endpoints: ["https://elasticsearch-es-http.platform.svc:9200"]
+        api_key: ${env:ELASTICSEARCH_API_KEY}
+        tls:
+          ca_file: /etc/elasticsearch/ca/ca.crt
+    service:
+      extensions: [health_check]
+      pipelines:
+        logs:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [elasticsearch]
+        metrics:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [elasticsearch]
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [elasticsearch]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elastic-otel-collector
+  namespace: platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: elastic-otel-collector}
+  template:
+    metadata:
+      labels: {app: elastic-otel-collector}
+    spec:
+      containers:
+        - name: collector
+          image: otel/opentelemetry-collector-contrib:0.125.0
+          args: ["--config=/etc/otelcol-contrib/config.yaml"]
+          env:
+            - name: ELASTICSEARCH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: elasticsearch-otel-api-key
+                  key: api_key
+          ports:
+            - {name: otlp-grpc, containerPort: 4317}
+            - {name: otlp-http, containerPort: 4318}
+            - {name: health, containerPort: 13133}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/otelcol-contrib/config.yaml
+              subPath: config.yaml
+              readOnly: true
+            - name: elasticsearch-ca
+              mountPath: /etc/elasticsearch/ca
+              readOnly: true
+          startupProbe:
+            httpGet: {path: /, port: health}
+            periodSeconds: 10
+            failureThreshold: 12
+          readinessProbe:
+            httpGet: {path: /, port: health}
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: {path: /, port: health}
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          resources:
+            requests: {cpu: 100m, memory: 128Mi}
+            limits: {cpu: 500m, memory: 512Mi}
+      volumes:
+        - name: config
+          configMap: {name: elastic-otel-collector-config}
+        - name: elasticsearch-ca
+          secret: {secretName: elasticsearch-es-http-certs-public}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elastic-otel-collector
+  namespace: platform
+spec:
+  selector: {app: elastic-otel-collector}
+  ports:
+    - {name: otlp-grpc, port: 4317, targetPort: otlp-grpc}
+    - {name: otlp-http, port: 4318, targetPort: otlp-http}

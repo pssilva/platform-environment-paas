@@ -4,7 +4,7 @@ O Compose e os manifests Kubernetes deste repositório são uma base de avaliaç
 
 ## Docker Compose
 
-Requisitos: Docker Engine e Docker Compose v2. O conjunto inclui PostgreSQL, GitLab CE, Jenkins, SonarQube Community Build, Grafana e OpenTelemetry Collector. GitLab e Jenkins, em particular, consomem bastante memória e disco; uma máquina pequena pode não conseguir executar todos simultaneamente.
+Requisitos: Docker Engine e Docker Compose v2.20 ou superior. O conjunto inclui PostgreSQL, GitLab CE, Jenkins, SonarQube Community Build, Grafana, Kibana, Elasticsearch e OpenTelemetry Collectors. Elasticsearch, GitLab e Jenkins consomem bastante memória e disco; dimensione o Docker Engine para os serviços que pretende executar.
 
 ```sh
 cp .env.example .env
@@ -21,8 +21,10 @@ Interfaces locais padrão:
 | Jenkins | http://localhost:8080 |
 | SonarQube | http://localhost:9000 |
 | Grafana | http://localhost:3000 |
+| Kibana | http://localhost:5601 |
 | PostgreSQL | localhost:5432 |
 | OTLP gRPC / HTTP | localhost:4317 / localhost:4318 |
+| OTLP para Elastic Stack gRPC / HTTP | localhost:14317 / localhost:14318 |
 
 Os volumes nomeados mantêm dados ao recriar containers. `docker compose down -v` remove os volumes e apaga esses dados. Os serviços publicam portas apenas no loopback do host. Configure senhas próprias antes de uso; a senha inicial do Jenkins é exibida nos logs. A imagem GitLab Omnibus executa serviços internos num único container e é apropriada aqui apenas para avaliação local.
 
@@ -47,6 +49,8 @@ kubectl -n platform get pods
 
 O comando de Secret acima coloca o valor no histórico do shell em algumas configurações; para uso real, injete-o por um secret manager ou um fluxo seguro de provisionamento. Objetos Secret do Kubernetes são codificados em base64 e não são criptografados no etcd por padrão. Configure criptografia em repouso e RBAC adequado no cluster.
 
+Kibana e Elasticsearch são gerenciados separadamente pela Elastic Cloud on Kubernetes (ECK), pois os manifests do operador instalam CRDs e recursos de escopo de cluster. Siga [kibana/README.md](../kibana/README.md) para instalar ECK e aplicar os recursos do componente; a Kustomize base não instala o operador.
+
 GitLab usa o chart Helm oficial em Kubernetes. A documentação do GitLab alerta que a imagem Omnibus única cria ponto único de falha e não deve ser implantada como container Kubernetes; use o chart e defina valores de hostname, ingress, storage, registry e secrets para o cluster. Consulte [instalação do chart GitLab](https://docs.gitlab.com/charts/installation/deployment/) antes de instalar. Exemplo de preparação:
 
 ```sh
@@ -61,7 +65,7 @@ Não há Service tipo LoadBalancer ou Ingress nesta base. Use `kubectl port-forw
 
 O backend e os frontends ainda não têm código, Dockerfile, dependências, portas ou endpoints de health; portanto, não há imagens ou workloads para eles. Quando os fontes existirem, cada aplicação deverá declarar o seu comando de execução, porta escutada, endpoint de health, configuração pública e forma de build. O frontend deve receber URL de API por configuração de build/runtime pública, sem segredos.
 
-O Collector recebe OTLP em 4317/4318 e envia os sinais ao exporter `debug`, para inspeção em seus logs. Grafana é iniciado sem datasource e não armazena métricas ou traces. Escolha e configure backends compatíveis antes de tratar os dados exibidos como observabilidade persistente.
+O Collector da plataforma recebe OTLP em 4317/4318 e envia os sinais ao exporter `debug`, para inspeção em seus logs. O Collector do componente Kibana recebe OTLP em 14317/14318 e envia logs, métricas e traces para Elasticsearch. Grafana é iniciado sem datasource e não armazena métricas ou traces.
 
 ## Atualização de imagens
 
