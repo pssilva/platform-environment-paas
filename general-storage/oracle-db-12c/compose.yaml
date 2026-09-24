@@ -1,0 +1,19 @@
+services:
+  oracle-db:
+    image: ${ORACLE_IMAGE:?Build/import Oracle image and set ORACLE_IMAGE}
+    environment:
+      ORACLE_PWD: ${ORACLE_PWD:?Set ORACLE_PWD in .env}
+    ports:
+      - "127.0.0.1:${ORACLE_PORT:-1521}:1521"
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/1521'"]
+      interval: 20s
+      timeout: 10s
+      retries: 30
+      start_period: 180s
+    restart: unless-stopped
+
+volumes:
+  oracle-data:

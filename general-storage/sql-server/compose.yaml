@@ -1,0 +1,21 @@
+services:
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:2022-GA-ubuntu
+    environment:
+      ACCEPT_EULA: ${ACCEPT_EULA:?Review license terms and set ACCEPT_EULA=Y}
+      MSSQL_PID: ${MSSQL_PID:-Developer}
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:?Set MSSQL_SA_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:${SQLSERVER_PORT:-1433}:1433"
+    volumes:
+      - sql-server-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/1433'"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
+    restart: unless-stopped
+
+volumes:
+  sql-server-data:
