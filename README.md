@@ -2,7 +2,7 @@
 
 Projeto de referência para uma plataforma PaaS que reúne ferramentas de CI/CD, qualidade, persistência, observabilidade e aplicações de exemplo.
 
-Importante ter em mente que o presente projeto foi todo implementado usando IA-LCD e SDD.
+Importante ter em mente que o presente projeto foi todo implementado usando IA-DLC e SDD (mais detalhes veja em [IA no ciclo de vida e SDD assistido por IA](./iadlc-sdd/README.md)).
 
 ## Componentes
 
@@ -14,6 +14,7 @@ Importante ter em mente que o presente projeto foi todo implementado usando IA-L
 - [Grafana](./grafana/README.md)
 - [Aplicação Backend RESTful](./backend-restful/README.md)
 - [Aplicações Frontend (Angular e React)](./frontend-angular-react/README.md)
+- [IA no ciclo de vida e SDD assistido por IA](./iadlc-sdd/README.md)
 
 Cada pasta documenta a finalidade do componente, seu papel na plataforma e pontos de integração. A infraestrutura de referência pode ser iniciada localmente com Docker Compose ou aplicada em Kubernetes; veja [Execução da plataforma](./docs/deployment.md). O backend RESTful e os frontends ainda são apenas descrições e não têm código para gerar imagens.
 
