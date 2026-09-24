@@ -40,6 +40,8 @@ Os manifests Kustomize implantam PostgreSQL, Jenkins, SonarQube, Grafana e o Col
 
 A toolbox de CLIs de nuvem é iniciada separadamente sob demanda; ela não faz parte do Compose ou da base Kustomize da plataforma. Consulte [provedores-nuvem/README.md](../provedores-nuvem/README.md) para construir a imagem e iniciar uma sessão Docker ou um Pod Kubernetes.
 
+Dynatrace também é opcional e requer ambiente, tokens e configuração próprios. O Compose do componente instala OneAgent no host Docker (Linux), enquanto Kubernetes usa o Dynatrace Operator e um recurso `DynaKube`; consulte [dynatrace/README.md](../dynatrace/README.md). Esses artefatos não são incluídos na stack padrão.
+
 Crie o Secret de banco fora do repositório, no mesmo namespace, e aplique a base:
 
 ```sh
