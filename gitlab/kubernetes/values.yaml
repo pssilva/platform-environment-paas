@@ -1,0 +1,42 @@
+# Valores base para GitLab Helm chart 10.4.1 (GitLab 19.4.1).
+# Substitua hosts e configure as dependências externas antes de instalar.
+global:
+  edition: ce
+  hosts:
+    domain: localhost
+    gitlab:
+      name: gitlab.localhost
+    https: false
+  ingress:
+    enabled: false
+  psql:
+    host: postgresql.platform.svc.cluster.local
+    port: 5432
+    database: gitlabhq_production
+    username: gitlab
+    password:
+      useSecret: true
+      secret: gitlab-postgres
+      key: psql-password
+  redis:
+    host: redis.example.internal
+    port: 6379
+    auth:
+      enabled: true
+      secret: gitlab-redis
+      key: redis-password
+  minio:
+    enabled: false
+  appConfig:
+    object_store:
+      enabled: true
+      connection:
+        secret: gitlab-object-storage
+        key: connection
+  registry:
+    bucket: gitlab-registry
+
+registry:
+  storage:
+    secret: gitlab-registry-storage
+    key: config

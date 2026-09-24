@@ -1,0 +1,9 @@
+# Exemplo de conexão S3 para os buckets de dados Rails do GitLab.
+# Substitua pelos dados do seu provedor; nunca use credenciais reais neste arquivo versionado.
+provider: AWS
+region: us-east-1
+aws_access_key_id: REPLACE_WITH_ACCESS_KEY
+aws_secret_access_key: REPLACE_WITH_SECRET_KEY
+# Para armazenamento compatível com S3, ajuste conforme o provedor:
+# endpoint: "https://storage.example.com"
+# path_style: true

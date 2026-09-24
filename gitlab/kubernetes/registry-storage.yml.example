@@ -1,0 +1,10 @@
+# Configuração S3 para o Container Registry do GitLab.
+# Substitua pelos dados do seu provedor; nunca use credenciais reais neste arquivo versionado.
+s3:
+  bucket: gitlab-registry
+  accesskey: REPLACE_WITH_ACCESS_KEY
+  secretkey: REPLACE_WITH_SECRET_KEY
+  region: us-east-1
+  v4auth: true
+  # Para armazenamento compatível com S3, ajuste conforme o provedor:
+  # regionendpoint: "https://storage.example.com"
