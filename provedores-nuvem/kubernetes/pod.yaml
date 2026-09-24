@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cloud-cli-toolbox
+  labels:
+    app.kubernetes.io/name: cloud-cli-toolbox
+    app.kubernetes.io/component: developer-toolbox
+spec:
+  restartPolicy: Never
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 10001
+    runAsGroup: 10001
+    fsGroup: 10001
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+    - name: toolbox
+      image: provedores-nuvem:dev
+      imagePullPolicy: IfNotPresent
+      command: ["sleep", "infinity"]
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: "2"
+          memory: 2Gi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+      volumeMounts:
+        - name: cli-home
+          mountPath: /home/toolbox
+  volumes:
+    - name: cli-home
+      emptyDir:
+        medium: Memory
+        sizeLimit: 256Mi
