@@ -38,6 +38,8 @@ docker compose --env-file .env.example config
 
 Os manifests Kustomize implantam PostgreSQL, Jenkins, SonarQube, Grafana e o Collector no namespace `platform`. Eles pressupõem uma StorageClass padrão. Se o cluster não tiver uma, defina `storageClassName` nos PVCs de [workloads.yaml](../kubernetes/base/workloads.yaml). Recursos e tamanhos de PVC são pontos de partida.
 
+A toolbox de CLIs de nuvem é iniciada separadamente sob demanda; ela não faz parte do Compose ou da base Kustomize da plataforma. Consulte [provedores-nuvem/README.md](../provedores-nuvem/README.md) para construir a imagem e iniciar uma sessão Docker ou um Pod Kubernetes.
+
 Crie o Secret de banco fora do repositório, no mesmo namespace, e aplique a base:
 
 ```sh

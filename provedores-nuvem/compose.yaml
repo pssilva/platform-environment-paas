@@ -1,0 +1,13 @@
+services:
+  toolbox:
+    image: provedores-nuvem:dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
+    working_dir: /workspace
+    tmpfs:
+      - /home/toolbox:uid=10001,gid=10001,mode=0700,size=64m
+    volumes:
+      - ../:/workspace:ro

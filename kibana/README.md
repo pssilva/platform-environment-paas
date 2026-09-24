@@ -26,7 +26,7 @@ O Exporter Elasticsearch do Collector grava logs, métricas e traces em data str
 
 O [compose.yaml](./compose.yaml) sobe Elasticsearch, Kibana e um Collector OTLP para avaliação local. Elasticsearch e Kibana usam a mesma versão `9.5.4`. O Elasticsearch fica em modo single-node, com segurança desativada e dados persistidos em volume; as portas publicadas ficam limitadas ao loopback do host. **Use esta configuração apenas localmente; ela não protege o Elasticsearch com autenticação ou TLS.**
 
-Requisitos: Docker Engine, Docker Compose v2.20 ou superior e memória alocada suficiente para os dois produtos Elastic. Como esta configuração usa Elasticsearch 9.5.4, configure `vm.max_map_count` no host para `1048576` antes de iniciar:
+Requisitos: Docker Engine, Docker Compose v2.20 ou superior e pelo menos 4 GiB de memória disponíveis para o Docker. Como esta configuração usa Elasticsearch 9.5.4, configure `vm.max_map_count` no host para `1048576` antes de iniciar:
 
 ```sh
 sudo sysctl -w vm.max_map_count=1048576
@@ -138,3 +138,4 @@ Dentro do cluster, configure as aplicações para enviar OTLP ao Collector em `e
 - [Instalar Elasticsearch localmente](https://www.elastic.co/docs/deploy-manage/deploy/self-managed/local-development-installation-quickstart)
 - [Elastic Cloud on Kubernetes](https://www.elastic.co/guide/en/cloud-on-k8s/current/index.html)
 - [Elasticsearch Exporter do OpenTelemetry Collector Contrib](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/elasticsearchexporter)
+- [Requisito de memória virtual do Elasticsearch](https://www.elastic.co/docs/deploy-manage/deploy/cloud-on-k8s/virtual-memory)

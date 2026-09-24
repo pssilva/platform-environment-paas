@@ -16,8 +16,9 @@ Importante ter em mente que o presente projeto foi todo implementado usando IA-D
 - [Aplicação Backend RESTful](./backend-restful/README.md)
 - [Aplicações Frontend (Angular e React)](./frontend-angular-react/README.md)
 - [IA no ciclo de vida e SDD assistido por IA](./iadlc-sdd/README.md)
+- [Provedores de nuvem e toolbox de CLIs](./provedores-nuvem/README.md)
 
-Cada pasta documenta a finalidade do componente, seu papel na plataforma e pontos de integração. A infraestrutura de referência pode ser iniciada localmente com Docker Compose ou aplicada em Kubernetes; veja [Execução da plataforma](./docs/deployment.md). O backend RESTful e os frontends ainda são apenas descrições e não têm código para gerar imagens.
+Cada pasta documenta a finalidade do componente, seu papel na plataforma e pontos de integração. A infraestrutura de referência pode ser iniciada localmente com Docker Compose ou aplicada em Kubernetes; veja [Execução da plataforma](./docs/deployment.md). Backend e frontends ainda são descrições sem código de aplicação. O componente Provedores de Nuvem oferece uma toolbox de linha de comando e documentação de estudo; não provisiona recursos automaticamente.
 
 
 ## 🚀 Começando
@@ -39,20 +40,4 @@ idea .
 
 #### 📋 Pré-requisitos
 
-Depois de baixar o projeto: De que coisas precisamos para atuar no projeto `platform-environment-paas` e executá-lo?
-
-Para isso, use os comandos do script de automação:
-
-```bash
-
-export ARTIFACT_ID="platform-environment-paas"
-export TOOL_NAME="PaaSScriptsUteis"
-export SCRIPT_PATH="${HOME}/projetos${ARTIFACT_ID}/scripts"
-export AUTOMATION_PATH="${SCRIPT_PATH}/src/main/automation"
-export TOOL_PATH="${AUTOMATION_PATH}/${TOOL_NAME}"
-
-source "${TOOL_PATH}/PaaSScriptsUteis_main.sh"
-
-PaaSScriptsUteis.installAllTools
-
-```
+Para executar a plataforma, instale Docker Engine com Docker Compose v2 ou um cluster Kubernetes compatível. Para instalar CLIs de nuvem no host, consulte os guias independentes em [Provedores de Nuvem](./provedores-nuvem/README.md); os scripts de instalação podem alterar o sistema e devem ser revisados antes da execução.
