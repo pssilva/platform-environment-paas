@@ -2,6 +2,8 @@
 
 Projeto de referência para uma plataforma PaaS que reúne ferramentas de CI/CD, qualidade, persistência, observabilidade e aplicações de exemplo.
 
+Importante ter em mente que o presente projeto foi todo implementado usando IA-LCD e SDD.
+
 ## Componentes
 
 - [GitLab](./gitlab/README.md)
