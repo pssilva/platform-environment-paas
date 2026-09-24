@@ -1,5 +1,8 @@
 name: platform-environment-paas
 
+include:
+  - path: ./kibana/compose.yaml
+
 services:
   postgresql:
     image: postgres:16.6-bookworm

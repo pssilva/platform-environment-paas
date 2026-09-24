@@ -12,6 +12,7 @@ Importante ter em mente que o presente projeto foi todo implementado usando IA-D
 - [PostgreSQL](./postgresql/README.md)
 - [OpenTelemetry](./opentelemetry/README.md)
 - [Grafana](./grafana/README.md)
+- [Kibana e Elastic Stack](./kibana/README.md)
 - [Aplicação Backend RESTful](./backend-restful/README.md)
 - [Aplicações Frontend (Angular e React)](./frontend-angular-react/README.md)
 - [IA no ciclo de vida e SDD assistido por IA](./iadlc-sdd/README.md)
