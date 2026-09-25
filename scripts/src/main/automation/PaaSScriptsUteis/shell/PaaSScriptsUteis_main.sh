@@ -24,7 +24,7 @@ function PaaSScriptsUteis.setVenvsForAllAlgorithms(){
 	export SCRIPT_PATH="${BASH_SOURCE:-$0}"
 	export SCRIPT_PATH="${BASH_SOURCE:-$0}"
 	export AUTOMATION_PATH="${HOME}/projetos/provedor-nuvem-certifications/scripts/src/main/automation"
-	export TEMPLATES_PATH="${AUTOMATION_PATH}/PaaSScriptsUteis/templates"
+	export TEMPLATES_PATH="${AUTOMATION_PATH}/PaaSScriptsUteis/shell/templates"
 
 
 }
@@ -1276,4 +1276,3 @@ EOF
 
 export -f PaaSScriptsUteis
 #########################################################
-
