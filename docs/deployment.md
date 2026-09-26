@@ -42,7 +42,7 @@ A toolbox de CLIs de nuvem é iniciada separadamente sob demanda; ela não faz p
 
 Os demais bancos do catálogo Armazenamentos Gerais também são iniciados separadamente, um por vez, usando o Compose ou o Kustomize do subcomponente escolhido. Consulte [general-storage/README.md](../general-storage/README.md) para instruções e os guias individuais. Esses manifests de nó único são para laboratório; apenas PostgreSQL integra a base Kubernetes desta plataforma.
 
-Dynatrace também é opcional e requer ambiente, tokens e configuração próprios. O Compose do componente instala OneAgent no host Docker (Linux), enquanto Kubernetes usa o Dynatrace Operator e um recurso `DynaKube`; consulte [dynatrace/README.md](../dynatrace/README.md). Esses artefatos não são incluídos na stack padrão.
+Dynatrace também é opcional e requer ambiente, tokens e configuração próprios. O Compose do componente instala OneAgent no host Docker (Linux), enquanto Kubernetes usa o Dynatrace Operator e um recurso `DynaKube`; consulte [observabilidade/dynatrace/README.md](../observabilidade/dynatrace/README.md). Esses artefatos não são incluídos na stack padrão.
 
 Crie o Secret de banco fora do repositório, no mesmo namespace, e aplique a base:
 
@@ -55,7 +55,7 @@ kubectl -n platform get pods
 
 O comando de Secret acima coloca o valor no histórico do shell em algumas configurações; para uso real, injete-o por um secret manager ou um fluxo seguro de provisionamento. Objetos Secret do Kubernetes são codificados em base64 e não são criptografados no etcd por padrão. Configure criptografia em repouso e RBAC adequado no cluster.
 
-Kibana e Elasticsearch são gerenciados separadamente pela Elastic Cloud on Kubernetes (ECK), pois os manifests do operador instalam CRDs e recursos de escopo de cluster. Siga [kibana/README.md](../kibana/README.md) para instalar ECK e aplicar os recursos do componente; a Kustomize base não instala o operador.
+Kibana e Elasticsearch são gerenciados separadamente pela Elastic Cloud on Kubernetes (ECK), pois os manifests do operador instalam CRDs e recursos de escopo de cluster. Siga [observabilidade/kibana/README.md](../observabilidade/kibana/README.md) para instalar ECK e aplicar os recursos do componente; a Kustomize base não instala o operador.
 
 GitLab usa o chart Helm oficial em Kubernetes. A documentação do GitLab alerta que a imagem Omnibus única cria ponto único de falha e não deve ser implantada como container Kubernetes; use o chart e defina valores de hostname, ingress, storage, registry e secrets para o cluster. Consulte [instalação do chart GitLab](https://docs.gitlab.com/charts/installation/deployment/) antes de instalar. Exemplo de preparação:
 

@@ -10,14 +10,11 @@ Importante ter em mente que o presente projeto foi todo implementado usando IA-D
 - [Jenkins](./jenkins/README.md)
 - [SonarQube](./sonarqube/README.md)
 - [Armazenamentos Gerais: bancos relacionais e NoSQL](./general-storage/README.md)
-- [OpenTelemetry](./opentelemetry/README.md)
-- [Grafana](./grafana/README.md)
-- [Kibana e Elastic Stack](./kibana/README.md)
+- [Observabilidade](./observabilidade/README.md)
 - [Aplicação Backend RESTful](./backend-restful/README.md)
 - [Aplicações Frontend (Angular e React)](./frontend-angular-react/README.md)
 - [IA no ciclo de vida e SDD assistido por IA](./iadlc-sdd/README.md)
 - [Provedores de nuvem e toolbox de CLIs](./provedores-nuvem/README.md)
-- [Dynatrace: saúde de microsserviços e validação de deploy](./dynatrace/README.md)
 
 Cada pasta documenta a finalidade do componente, seu papel na plataforma e pontos de integração. Armazenamentos Gerais reúne guias e artefatos Compose/Kubernetes independentes para bancos relacionais e NoSQL; a stack padrão continua iniciando somente o PostgreSQL. A infraestrutura de referência pode ser iniciada localmente com Docker Compose ou aplicada em Kubernetes; veja [Execução da plataforma](./docs/deployment.md). Backend e frontends ainda são descrições sem código de aplicação. O componente Provedores de Nuvem oferece uma toolbox de linha de comando e documentação de estudo; Dynatrace é uma integração opcional com uma conta externa e monitora os workloads configurados.
 

@@ -1,7 +1,7 @@
 name: platform-environment-paas
 
 include:
-  - path: ./kibana/compose.yaml
+  - path: ./observabilidade/kibana/compose.yaml
 
 services:
   postgresql:

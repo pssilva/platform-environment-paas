@@ -25,17 +25,17 @@ A configuração usa a imagem oficial `dynatrace/oneagent`; por isso, este compo
 Obtenha a URL do instalador e o token na página **Dynatrace Hub → OneAgent → Set up → Linux**. A URL é específica do ambiente e contém parâmetros de instalação; trate-a como dado sensível. Copie o exemplo de ambiente, escolha uma tag OneAgent suportada e preencha os valores localmente:
 
 ```bash
-cp dynatrace/.env.example dynatrace/.env
-# Edite dynatrace/.env localmente; nunca versione o arquivo preenchido.
-docker compose --env-file dynatrace/.env -f dynatrace/compose.yaml up -d
-docker compose --env-file dynatrace/.env -f dynatrace/compose.yaml ps
-docker compose --env-file dynatrace/.env -f dynatrace/compose.yaml logs -f oneagent
+cp observabilidade/dynatrace/.env.example observabilidade/dynatrace/.env
+# Edite observabilidade/dynatrace/.env localmente; nunca versione o arquivo preenchido.
+docker compose --env-file observabilidade/dynatrace/.env -f observabilidade/dynatrace/compose.yaml up -d
+docker compose --env-file observabilidade/dynatrace/.env -f observabilidade/dynatrace/compose.yaml ps
+docker compose --env-file observabilidade/dynatrace/.env -f observabilidade/dynatrace/compose.yaml logs -f oneagent
 ```
 
 O `.env` é ignorado pelo Git. Variáveis de ambiente do container podem ser vistas por usuários com acesso ao daemon Docker; use host controlado e restrinja esse acesso. Para remover o agente:
 
 ```bash
-docker compose --env-file dynatrace/.env -f dynatrace/compose.yaml down
+docker compose --env-file observabilidade/dynatrace/.env -f observabilidade/dynatrace/compose.yaml down
 ```
 
 O volume `oneagent-storage` mantém arquivos do OneAgent entre reinicializações. O host deve ter `/opt` e ser Linux. O modelo de OneAgent container é destinado a instrumentar o host Docker e seus containers; para uma imagem isolada de aplicação sem acesso ao host, veja [OneAgent application-only](https://docs.dynatrace.com/docs/ingest-from/setup-on-container-platforms/docker/set-up-oneagent-on-containers-for-application-only-monitoring).
@@ -65,7 +65,7 @@ kubectl -n dynatrace create secret generic dynakube \
 Edite `kubernetes/dynakube.yaml` e troque `<environment-id>` pela URL base do seu ambiente. Depois aplique e acompanhe os recursos:
 
 ```bash
-kubectl apply -f dynatrace/kubernetes/dynakube.yaml
+kubectl apply -f observabilidade/dynatrace/kubernetes/dynakube.yaml
 kubectl get dynakube -n dynatrace
 kubectl get pods -n dynatrace
 ```
@@ -73,7 +73,7 @@ kubectl get pods -n dynatrace
 O Operator instala CRDs, webhook e componentes de monitoramento com permissões de cluster. O manifesto acompanha a API `dynatrace.com/v1beta5`; verifique a versão do Operator e a API `DynaKube` suportada antes de atualizar. Não aplique o manifesto sem antes instalar o Operator e criar o Secret. A remoção do recurso `DynaKube` interrompe a instrumentação; desinstale o Operator somente depois de avaliar o impacto:
 
 ```bash
-kubectl delete -f dynatrace/kubernetes/dynakube.yaml
+kubectl delete -f observabilidade/dynatrace/kubernetes/dynakube.yaml
 helm uninstall dynatrace-operator -n dynatrace
 ```
 
@@ -92,7 +92,7 @@ export DT_RELEASE_STAGE="staging"
 export DT_DEPLOYMENT_STATUS="succeeded"
 export DT_COMMIT_SHA="${CI_COMMIT_SHA}"
 export DT_REPOSITORY_URL="${CI_PROJECT_URL}"
-python3 dynatrace/scripts/send-deployment-event.py
+python3 observabilidade/dynatrace/scripts/send-deployment-event.py
 ```
 
 O script envia `deployment finished` ao endpoint `/platform/ingest/v1/events.sdlc`. Na aplicação Dynatrace, configure um Workflow com filtro de evento, por exemplo `event.kind == "SDLC_EVENT" AND event.type == "deployment" AND event.status == "finished"`, e ligue-o a um Site Reliability Guardian com objetivos de saúde do serviço. [Ingest SDLC events](https://docs.dynatrace.com/docs/deliver/pipeline-observability-sdlc-events/sdlc-events) · [Modelo de eventos SDLC](https://docs.dynatrace.com/docs/semantic-dictionary/model/sdlc-events)
@@ -100,7 +100,7 @@ O script envia `deployment finished` ao endpoint `/platform/ingest/v1/events.sdl
 ## Arquivos
 
 ```text
-dynatrace/
+observabilidade/dynatrace/
 ├── compose.yaml
 ├── .env.example
 ├── kubernetes/dynakube.yaml
@@ -108,4 +108,4 @@ dynatrace/
 └── README.md
 ```
 
-As opções do ambiente e o motivo para manter a instalação fora da stack padrão estão descritos em [ADR-0003](../docs/decisions/0003-dynatrace-agent-deployment.md).
+As opções do ambiente e o motivo para manter a instalação fora da stack padrão estão descritos em [ADR-0003](../../docs/decisions/0003-dynatrace-agent-deployment.md).

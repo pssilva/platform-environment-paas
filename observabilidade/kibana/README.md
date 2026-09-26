@@ -35,8 +35,8 @@ sudo sysctl -w vm.max_map_count=1048576
 Inicie somente este componente:
 
 ```sh
-docker compose -f kibana/compose.yaml up -d
-docker compose -f kibana/compose.yaml ps
+docker compose -f observabilidade/kibana/compose.yaml up -d
+docker compose -f observabilidade/kibana/compose.yaml ps
 ```
 
 Ou inicie a plataforma completa, que inclui este Compose:
@@ -56,7 +56,7 @@ Interfaces locais:
 
 Configure as aplicações para exportar OTLP a `http://localhost:14317` (gRPC) ou `http://localhost:14318` (HTTP/protobuf). Aplicações em containers da mesma stack podem enviar para `elastic-otel-collector:4317` ou `elastic-otel-collector:4318`. Depois, em Kibana, use **Discover** e selecione (ou crie) data views `logs-*-*`, `metrics-*-*` ou `traces-*-*`; os índices só aparecem após a chegada de sinais.
 
-`docker compose -f kibana/compose.yaml down` preserva os dados. `docker compose -f kibana/compose.yaml down -v` remove o volume do Elasticsearch. A stack completa também remove esse volume se executada com `docker compose down -v` na raiz.
+`docker compose -f observabilidade/kibana/compose.yaml down` preserva os dados. `docker compose -f observabilidade/kibana/compose.yaml down -v` remove o volume do Elasticsearch. A stack completa também remove esse volume se executada com `docker compose down -v` na raiz.
 
 ## Kubernetes com ECK
 
@@ -71,7 +71,7 @@ Instale uma versão específica do operador seguindo os manifests oficiais e apl
 ```sh
 kubectl create -f https://download.elastic.co/downloads/eck/3.5.0/crds.yaml
 kubectl apply -f https://download.elastic.co/downloads/eck/3.5.0/operator.yaml
-kubectl apply -f kibana/kubernetes/elastic-stack.yaml
+kubectl apply -f observabilidade/kibana/kubernetes/elastic-stack.yaml
 kubectl get elasticsearch,kibana --namespace platform
 ```
 
@@ -118,7 +118,7 @@ Salve o campo `encoded` retornado em um arquivo local protegido e crie o Secret 
 kubectl create secret generic elasticsearch-otel-api-key \
   --namespace platform \
   --from-file=api_key=/caminho-seguro/api-key-encoded
-kubectl apply -f kibana/kubernetes/otel-collector.yaml
+kubectl apply -f observabilidade/kibana/kubernetes/otel-collector.yaml
 kubectl get pods,services --namespace platform
 ```
 
