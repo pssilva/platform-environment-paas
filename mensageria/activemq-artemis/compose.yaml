@@ -1,0 +1,19 @@
+services:
+  artemis:
+    image: apache/activemq-artemis:2.53.0-alpine
+    hostname: artemis
+    environment:
+      ARTEMIS_USER: ${ARTEMIS_USER:-platform}
+      ARTEMIS_PASSWORD: ${ARTEMIS_PASSWORD:?Set ARTEMIS_PASSWORD in .env}
+      ANONYMOUS_LOGIN: "false"
+    ports:
+      - "127.0.0.1:61616:61616"
+      - "127.0.0.1:8161:8161"
+      - "127.0.0.1:5672:5672"
+      - "127.0.0.1:1883:1883"
+    volumes:
+      - artemis-data:/var/lib/artemis-instance
+    restart: unless-stopped
+
+volumes:
+  artemis-data:
