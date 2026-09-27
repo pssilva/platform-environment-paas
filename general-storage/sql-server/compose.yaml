@@ -1,6 +1,6 @@
 services:
   sql-server:
-    image: mcr.microsoft.com/mssql/server:2022-GA-ubuntu
+    image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       ACCEPT_EULA: ${ACCEPT_EULA:?Review license terms and set ACCEPT_EULA=Y}
       MSSQL_PID: ${MSSQL_PID:-Developer}
